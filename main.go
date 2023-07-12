@@ -16,5 +16,12 @@ func main() {
 	// print the structure of the directory
 	structure := utils.ConstructStructure(dir, 0, false)
 
-	fmt.Println(structure)
+	err = utils.SaveStructureToFile(structure, "structure.md")
+
+	if err != nil {
+		fmt.Println("Error saving structure to file:", err)
+		return
+	}
+
+	fmt.Println("Successfully saved structure to file")
 }

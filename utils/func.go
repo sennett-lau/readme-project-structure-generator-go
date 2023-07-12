@@ -96,3 +96,20 @@ func ConstructStructure(dir types.Directory, indent int, isLast bool) string {
 
 	return output
 }
+
+func SaveStructureToFile(structure string, path string) error {
+	// create the file
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// write the structure to the file
+	_, err = file.WriteString(structure)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
