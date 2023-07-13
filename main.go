@@ -7,7 +7,10 @@ import (
 
 func main() {
 	// get the structure of the current directory
-	dir, err := utils.GetProjectStructure(".")
+
+	ignoreList := utils.GetDefaultIgnoreList()
+
+	dir, err := utils.GetProjectStructure(".", ignoreList)
 	if err != nil {
 		fmt.Println("Error getting project structure:", err)
 		return

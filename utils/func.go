@@ -5,9 +5,10 @@ import (
 	"os"
 	"path/filepath"
 	"sennett-lau/rpsg/types"
+	"strings"
 )
 
-func GetProjectStructure(path string) (types.Directory, error) {
+func GetProjectStructure(path string, ignoreList []string) (types.Directory, error) {
 	// get information about the file or directory at the specified path
 	info, err := os.Stat(path)
 	if err != nil {
@@ -27,9 +28,14 @@ func GetProjectStructure(path string) (types.Directory, error) {
 
 		// loop through each file or directory in the directory
 		for _, file := range files {
+			// check if the file or directory should be ignored
+			if contains(ignoreList, file.Name()) {
+				continue
+			}
+
 			// recursively get the structure of the child file or directory
 			childPath := filepath.Join(path, file.Name())
-			childDir, err := GetProjectStructure(childPath)
+			childDir, err := GetProjectStructure(childPath, ignoreList)
 			if err != nil {
 				return types.Directory{}, err
 			}
@@ -112,4 +118,19 @@ func SaveStructureToFile(structure string, path string) error {
 	}
 
 	return nil
+}
+
+func contains(ignoreList []string, name string) bool {
+	for _, ignore := range ignoreList {
+		if strings.HasPrefix(ignore, "*.") {
+			// if the ignore entry is a file type, check if the file extension matches
+			if filepath.Ext(name) == ignore[1:] {
+				return true
+			}
+		} else if ignore == name {
+			// if the ignore entry is a file or directory name, check if the name matches
+			return true
+		}
+	}
+	return false
 }
