@@ -29,7 +29,7 @@ func GetProjectStructure(path string, ignoreList []string) (types.Directory, err
 		// loop through each file or directory in the directory
 		for _, file := range files {
 			// check if the file or directory should be ignored
-			if contains(ignoreList, file.Name()) {
+			if Contains(ignoreList, file.Name()) {
 				continue
 			}
 
@@ -120,7 +120,7 @@ func SaveStructureToFile(structure string, path string) error {
 	return nil
 }
 
-func contains(ignoreList []string, name string) bool {
+func Contains(ignoreList []string, name string) bool {
 	for _, ignore := range ignoreList {
 		if strings.HasPrefix(ignore, "*.") {
 			// if the ignore entry is a file type, check if the file extension matches
