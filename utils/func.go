@@ -104,6 +104,8 @@ func ConstructStructure(dir types.Directory, indent int, isLast bool) string {
 }
 
 func SaveStructureToFile(structure string, path string) error {
+	structure = "```\n" + structure + "```"
+
 	// create the file
 	file, err := os.Create(path)
 	if err != nil {
