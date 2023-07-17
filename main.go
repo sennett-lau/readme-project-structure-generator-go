@@ -2,13 +2,37 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"sennett-lau/rpsg/utils"
 )
 
 func main() {
 	// get the structure of the current directory
 
+	showIgnoreList := false
+	runRpsg := true
+
+	for _, arg := range os.Args {
+		if arg == "--show-ignore-list" {
+			showIgnoreList = true
+			runRpsg = false
+			break
+		}
+	}
+
 	ignoreList := utils.GetDefaultIgnoreList()
+
+	if showIgnoreList {
+		fmt.Println("Ignore list:")
+		for _, item := range ignoreList {
+			fmt.Println(item)
+		}
+		fmt.Println()
+	}
+
+	if !runRpsg {
+		return
+	}
 
 	dir, err := utils.GetProjectStructure(".", ignoreList)
 	if err != nil {
