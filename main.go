@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"os"
 	"sennett-lau/rpsg/utils"
+	"strings"
 )
 
 func main() {
 	// get the structure of the current directory
 
 	showIgnoreList := false
+	var ignoreListExtends []string
 	runRpsg := true
 
 	for _, arg := range os.Args {
@@ -17,10 +19,15 @@ func main() {
 			showIgnoreList = true
 			runRpsg = false
 			break
+		} else if strings.HasPrefix(arg, "--extend-ignore-list=") {
+			listStrings := strings.Split(arg, "=")[1]
+			ignoreListExtends = strings.Split(listStrings, ",")
 		}
 	}
 
 	ignoreList := utils.GetDefaultIgnoreList()
+
+	combinedList := append(ignoreList, ignoreListExtends...)
 
 	if showIgnoreList {
 		fmt.Println("Ignore list:")
@@ -34,7 +41,7 @@ func main() {
 		return
 	}
 
-	dir, err := utils.GetProjectStructure(".", ignoreList)
+	dir, err := utils.GetProjectStructure(".", combinedList)
 	if err != nil {
 		fmt.Println("Error getting project structure:", err)
 		return
