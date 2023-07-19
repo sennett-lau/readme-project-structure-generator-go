@@ -20,8 +20,14 @@ func main() {
 			runRpsg = false
 			break
 		} else if strings.HasPrefix(arg, "--extend-ignore-list=") {
-			listStrings := strings.Split(arg, "=")[1]
-			ignoreListExtends = strings.Split(listStrings, ",")
+			listStrings := strings.Split(arg, "=")
+
+			if len(listStrings) != 1 {
+				fmt.Println("Format Error")
+				return
+			}
+
+			ignoreListExtends = strings.Split(listStrings[1], ",")
 		}
 	}
 
