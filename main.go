@@ -8,11 +8,19 @@ import (
 )
 
 func main() {
-	// get the structure of the current directory
-
-	showIgnoreList := false
-	var ignoreListExtends []string
+	// ====================================================================================================
+	// The following flags can be changed to modify the behavior of the program
+	// ====================================================================================================
+	// run the rpsg program to generate the structure.md file
 	runRpsg := true
+
+	// show the ignore list and exit without running the rpsg program with the --show-ignore-list flag
+	showIgnoreList := false
+
+	// the list of extensions to ignore with the --extend-ignore-list flag
+	var ignoreListExtends []string
+
+	// ====================================================================================================
 
 	for _, arg := range os.Args {
 		if arg == "--show-ignore-list" {
