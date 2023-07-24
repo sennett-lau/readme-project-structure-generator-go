@@ -5,11 +5,13 @@ import (
 	"testing"
 )
 
+type argsCheckTestCase struct {
+	input    string
+	expected bool
+}
+
 func TestArgIsValidExtendIgnoreList(t *testing.T) {
-	testCases := []struct {
-		input    string
-		expected bool
-	}{
+	testCases := []argsCheckTestCase{
 		// Valid test cases
 		{input: "--extend-ignore-list=image.jpg", expected: true},
 		{input: "--extend-ignore-list=image.jpg,test.js", expected: true},
