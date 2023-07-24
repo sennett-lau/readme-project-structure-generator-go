@@ -11,17 +11,18 @@ func TestArgIsValidExtendIgnoreList(t *testing.T) {
 		expected bool
 	}{
 		// Valid test cases
-		{input: "key=image.jpg", expected: true},
-		{input: "key=image.jpg,test.js", expected: true},
-		{input: "key=image.jpg,test.js,react.jsx", expected: true},
+		{input: "--extend-ignore-list=image.jpg", expected: true},
+		{input: "--extend-ignore-list=image.jpg,test.js", expected: true},
+		{input: "--extend-ignore-list=image.jpg,test.js,react.jsx", expected: true},
 
 		// Invalid test cases
-		{input: "key=invalid$", expected: false},
-		{input: "key=", expected: false},
-		{input: "key=value,invalid$", expected: false},
-		{input: "key=value1/value2,invalid$", expected: false},
-		{input: "key=value1/invalid$", expected: false},
-		{input: "key=value1, value2", expected: false},
+		{input: "--extend-ignore-list=invalid$", expected: false},
+		{input: "--extend-ignore-list=", expected: false},
+		{input: "--extend-ignore-list=value,invalid$", expected: false},
+		{input: "--extend-ignore-list=value1/value2,invalid$", expected: false},
+		{input: "--extend-ignore-list=value1/invalid$", expected: false},
+		{input: "--extend-ignore-list=value1, value2", expected: false},
+		{input: "key=value1", expected: false},
 	}
 
 	for _, tc := range testCases {

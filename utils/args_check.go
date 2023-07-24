@@ -12,6 +12,10 @@ func ArgIsValidExtendIgnoreList(arg string) bool {
 		return false
 	}
 
+	if listStrings[0] != "--extend-ignore-list" {
+		return false
+	}
+
 	param := listStrings[1]
 	rePattern := regexp.MustCompile(`^([\w]+.[\w]+|[\w]+)/?(,([\w]+.[\w]+|[\w]+)/?)*$`)
 
