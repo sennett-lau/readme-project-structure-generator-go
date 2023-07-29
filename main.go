@@ -73,7 +73,7 @@ func main() {
 	}
 
 	// print the structure of the directory
-	structure := utils.ConstructStructure(dir, 0, false, 0, maxDepth)
+	structure := utils.ConstructStructure(dir, 0, false, 0, maxDepth, []bool{})
 
 	err = utils.SaveStructureToFile(structure, "structure.md")
 

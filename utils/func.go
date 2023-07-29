@@ -52,7 +52,7 @@ func GetProjectStructure(path string, ignoreList []string) (types.Directory, err
 	return dir, nil
 }
 
-func ConstructStructure(dir types.Directory, indent int, isLast bool, depth int, maxDepth int) string {
+func ConstructStructure(dir types.Directory, indent int, isLast bool, depth int, maxDepth int, isExtendDepth []bool) string {
 	var output string
 	numOfFiles := len(dir.Files)
 	numOfSubDirectories := len(dir.SubDirectories)
@@ -61,8 +61,10 @@ func ConstructStructure(dir types.Directory, indent int, isLast bool, depth int,
 		for i := 0; i < indent; i++ {
 			if i == indent-1 {
 				output += "└── ...\n"
+			} else if isExtendDepth[i] {
+				output += "│   "
 			} else {
-				output += "|   "
+				output += "    "
 			}
 		}
 	} else {
@@ -74,8 +76,10 @@ func ConstructStructure(dir types.Directory, indent int, isLast bool, depth int,
 				} else {
 					output += "├── "
 				}
-			} else {
+			} else if isExtendDepth[i] {
 				output += "│   "
+			} else {
+				output += "    "
 			}
 		}
 		output += dir.Name + "\n"
@@ -85,7 +89,12 @@ func ConstructStructure(dir types.Directory, indent int, isLast bool, depth int,
 		dirIndex := 0
 		if depth < maxDepth + 1 {
 			for _, child := range dir.SubDirectories {
-				output += ConstructStructure(child, indent+1, dirIndex == numOfSubDirectories-1 && numOfFiles == 0, depth + 1, maxDepth)
+				if dirIndex == numOfSubDirectories-1 && numOfFiles == 0 {
+					isExtendDepth = append(isExtendDepth, false)
+				} else {
+					isExtendDepth = append(isExtendDepth, true)
+				}
+				output += ConstructStructure(child, indent+1, dirIndex == numOfSubDirectories-1 && numOfFiles == 0, depth + 1, maxDepth, isExtendDepth)
 				dirIndex++
 			}
 		}
@@ -100,12 +109,10 @@ func ConstructStructure(dir types.Directory, indent int, isLast bool, depth int,
 					} else {
 						output += "├── "
 					}
+				} else if isExtendDepth[i] {
+					output += "│   "
 				} else {
-					if isLast && i == indent-1 {
-						output += "    "
-					} else {
-						output += "│   "
-					}
+					output += "    "
 				}
 			}
 			fileIndex++
