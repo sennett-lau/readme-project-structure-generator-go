@@ -5,6 +5,7 @@ import (
 	"os"
 	"sennett-lau/rpsg/utils"
 	"strings"
+	"strconv"
 )
 
 func main() {
@@ -17,10 +18,15 @@ func main() {
 	// show the ignore list and exit without running the rpsg program with the --show-ignore-list flag
 	showIgnoreList := false
 
+	// set the max depth (default is 6) of the structure with the --max-depth flag
+	maxDepth := 6
+
 	// the list of extensions to ignore with the --extend-ignore-list flag
 	var ignoreListExtends []string
 
 	// ====================================================================================================
+
+	var err error
 
 	for _, arg := range os.Args {
 		if arg == "--show-ignore-list" {
@@ -34,6 +40,13 @@ func main() {
 			}
 
 			ignoreListExtends = strings.Split(strings.Split(arg, "=")[1], ",")
+		} else if strings.HasPrefix(arg, "--max-depth=") {
+			if utils.ArgIsValidMaxDepth(arg) == false {
+				fmt.Println("Format Error")
+				return
+			}
+
+			maxDepth, err = strconv.Atoi(strings.Split(arg, "=")[1])
 		}
 	}
 
@@ -60,7 +73,7 @@ func main() {
 	}
 
 	// print the structure of the directory
-	structure := utils.ConstructStructure(dir, 0, false)
+	structure := utils.ConstructStructure(dir, 0, false, 0, maxDepth)
 
 	err = utils.SaveStructureToFile(structure, "structure.md")
 

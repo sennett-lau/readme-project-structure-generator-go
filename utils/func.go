@@ -52,52 +52,65 @@ func GetProjectStructure(path string, ignoreList []string) (types.Directory, err
 	return dir, nil
 }
 
-func ConstructStructure(dir types.Directory, indent int, isLast bool) string {
+func ConstructStructure(dir types.Directory, indent int, isLast bool, depth int, maxDepth int) string {
 	var output string
 	numOfFiles := len(dir.Files)
 	numOfSubDirectories := len(dir.SubDirectories)
-
-	// print the name of the directory with the appropriate indentation
-	for i := 0; i < indent; i++ {
-		if i == indent-1 {
-			if isLast {
-				output += "└── "
+	
+	if depth == maxDepth {
+		for i := 0; i < indent; i++ {
+			if i == indent-1 {
+				output += "└── ...\n"
 			} else {
-				output += "├── "
+				output += "|   "
 			}
-		} else {
-			output += "│   "
 		}
-	}
-	output += dir.Name + "\n"
-
-	// recursively print the structure of each child directory
-	dirIndex := 0
-	for _, child := range dir.SubDirectories {
-		output += ConstructStructure(child, indent+1, dirIndex == numOfSubDirectories-1 && numOfFiles == 0)
-		dirIndex++
-	}
-
-	// print the files in the directory with the appropriate indentation
-	fileIndex := 0
-	for _, file := range dir.Files {
-		for i := 0; i < indent+1; i++ {
-			if i == indent {
-				if fileIndex == len(dir.Files)-1 {
+	} else {
+		// print the name of the directory with the appropriate indentation
+		for i := 0; i < indent; i++ {
+			if i == indent-1 {
+				if isLast {
 					output += "└── "
 				} else {
 					output += "├── "
 				}
 			} else {
-				if isLast && i == indent-1 {
-					output += "    "
-				} else {
-					output += "│   "
-				}
+				output += "│   "
 			}
 		}
-		fileIndex++
-		output += file + "\n"
+		output += dir.Name + "\n"
+	
+
+		// recursively print the structure of each child directory
+		dirIndex := 0
+		if depth < maxDepth + 1 {
+			for _, child := range dir.SubDirectories {
+				output += ConstructStructure(child, indent+1, dirIndex == numOfSubDirectories-1 && numOfFiles == 0, depth + 1, maxDepth)
+				dirIndex++
+			}
+		}
+
+		// print the files in the directory with the appropriate indentation
+		fileIndex := 0
+		for _, file := range dir.Files {
+			for i := 0; i < indent+1; i++ {
+				if i == indent {
+					if fileIndex == len(dir.Files)-1 {
+						output += "└── "
+					} else {
+						output += "├── "
+					}
+				} else {
+					if isLast && i == indent-1 {
+						output += "    "
+					} else {
+						output += "│   "
+					}
+				}
+			}
+			fileIndex++
+			output += file + "\n"
+		}
 	}
 
 	return output
