@@ -156,3 +156,24 @@ func Contains(ignoreList []string, name string) bool {
 	}
 	return false
 }
+
+func GetDotRpsgIgnoreList(file string) ([]string, error) {
+	// read the .rpsgignore file
+	content, err := ioutil.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+
+	// split the file content by newlines
+	lines := strings.Split(string(content), "\n")
+
+	// remove empty lines and comments
+	var ignoreList []string
+	for _, line := range lines {
+		if line != "" && !strings.HasPrefix(line, "#") {
+			ignoreList = append(ignoreList, line)
+		}
+	}
+
+	return ignoreList, nil
+}

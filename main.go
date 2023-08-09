@@ -24,9 +24,20 @@ func main() {
 	// the list of extensions to ignore with the --extend-ignore-list flag
 	var ignoreListExtends []string
 
+	// the list of extensions to ignore from .rpsgignore
+	var dotRpsgIgnoreList []string
+
 	// ====================================================================================================
 
 	var err error
+
+	// get the list of extensions to ignore from .rpsgignore
+	dotRpsgIgnoreList, err = utils.GetDotRpsgIgnoreList(".rpsgignore")
+
+	if err != nil {
+		fmt.Println("Error getting .rpsgignore list:", err)
+		return
+	}
 
 	for _, arg := range os.Args {
 		if arg == "--show-ignore-list" {
@@ -52,7 +63,9 @@ func main() {
 
 	ignoreList := utils.GetDefaultIgnoreList()
 
-	combinedList := append(ignoreList, ignoreListExtends...)
+	combinedList := append(ignoreList, dotRpsgIgnoreList...)
+
+	combinedList = append(combinedList, ignoreListExtends...)
 
 	if showIgnoreList {
 		fmt.Println("Ignore list:")
