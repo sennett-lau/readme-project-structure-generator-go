@@ -158,6 +158,11 @@ func Contains(ignoreList []string, name string) bool {
 }
 
 func GetDotRpsgIgnoreList(file string) ([]string, error) {
+	// check if the .rpsgignore file exists
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		return []string{}, nil
+	}
+
 	// read the .rpsgignore file
 	content, err := ioutil.ReadFile(file)
 	if err != nil {
