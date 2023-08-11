@@ -86,7 +86,8 @@ func main() {
 	}
 
 	// print the structure of the directory
-	structure := utils.ConstructStructure(dir, 0, false, 0, maxDepth, []bool{})
+	// maxDepth + 1 because the root directory is not counted as a level
+	structure := utils.ConstructStructure(dir, 0, false, 0, maxDepth + 1, []bool{})
 
 	err = utils.SaveStructureToFile(structure, "structure.md")
 
