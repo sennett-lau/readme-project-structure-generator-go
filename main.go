@@ -15,13 +15,13 @@ func main() {
 	// run the rpsg program to generate the structure.md file
 	runRpsg := true
 
-	// show the ignore list and exit without running the rpsg program with the --show-ignore-list flag
+	// show the ignore list and exit without running the rpsg program with the --show-ignore-list / -s flag
 	showIgnoreList := false
 
-	// set the max depth (default is 6) of the structure with the --max-depth flag
+	// set the max depth (default is 6) of the structure with the --max-depth / -d flag
 	maxDepth := 6
 
-	// the list of extensions to ignore with the --extend-ignore-list flag
+	// the list of extensions to ignore with the --extend-ignore-list / -e flag
 	var ignoreListExtends []string
 
 	// the list of extensions to ignore from .rpsgignore
@@ -40,18 +40,18 @@ func main() {
 	}
 
 	for _, arg := range os.Args {
-		if arg == "--show-ignore-list" {
+		if arg == "--show-ignore-list" || arg == "-s" {
 			showIgnoreList = true
 			runRpsg = false
 			break
-		} else if strings.HasPrefix(arg, "--extend-ignore-list=") {
+		} else if strings.HasPrefix(arg, "--extend-ignore-list=") || strings.HasPrefix(arg, "-e=") {
 			if utils.ArgIsValidExtendIgnoreList(arg) == false {
 				fmt.Println("Format Error")
 				return
 			}
 
 			ignoreListExtends = strings.Split(strings.Split(arg, "=")[1], ",")
-		} else if strings.HasPrefix(arg, "--max-depth=") {
+		} else if strings.HasPrefix(arg, "--max-depth=") || strings.HasPrefix(arg, "-d=") {
 			if utils.ArgIsValidMaxDepth(arg) == false {
 				fmt.Println("Format Error")
 				return

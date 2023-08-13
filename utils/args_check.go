@@ -12,7 +12,7 @@ func ArgIsValidExtendIgnoreList(arg string) bool {
 		return false
 	}
 
-	if listStrings[0] != "--extend-ignore-list" {
+	if listStrings[0] != "--extend-ignore-list" && listStrings[0] != "-e" {
 		return false
 	}
 
@@ -29,7 +29,7 @@ func ArgIsValidMaxDepth(arg string) bool {
 		return false
 	}
 
-	if listStrings[0] != "--max-depth" {
+	if listStrings[0] != "--max-depth" && listStrings[0] != "-d" {
 		return false
 	}
 
