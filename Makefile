@@ -6,3 +6,5 @@ build:
 	GOARCH=amd64 GOOS=darwin go build -o ./build/$(BINARY_NAME)-darwin_amd64 main.go
 	GOARCH=amd64 GOOS=windows go build -o ./build/$(BINARY_NAME)-windows_amd64 main.go
 
+test:
+	go test ./test/*
