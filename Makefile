@@ -8,3 +8,8 @@ build:
 
 test:
 	go test ./test/*
+
+install:
+	go build
+	cp ./rpsg /usr/local/bin/
+	rm -f ./rpsg
