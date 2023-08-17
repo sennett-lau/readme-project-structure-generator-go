@@ -4,32 +4,17 @@ import (
 	"fmt"
 	"os"
 	"sennett-lau/rpsg/utils"
-	"strings"
-	"strconv"
 )
 
 func main() {
+	var err error
+
 	// ====================================================================================================
-	// The following flags can be changed to modify the behavior of the program
-	// ====================================================================================================
-	// run the rpsg program to generate the structure.md file
-	runRpsg := true
 
-	// show the ignore list and exit without running the rpsg program with the --show-ignore-list / -s flag
-	showIgnoreList := false
-
-	// set the max depth (default is 6) of the structure with the --max-depth / -d flag
-	maxDepth := 6
-
-	// the list of extensions to ignore with the --extend-ignore-list / -e flag
-	var ignoreListExtends []string
+	ignoreList := utils.GetDefaultIgnoreList()
 
 	// the list of extensions to ignore from .rpsgignore
 	var dotRpsgIgnoreList []string
-
-	// ====================================================================================================
-
-	var err error
 
 	// get the list of extensions to ignore from .rpsgignore
 	dotRpsgIgnoreList, err = utils.GetDotRpsgIgnoreList(".rpsgignore")
@@ -39,35 +24,20 @@ func main() {
 		return
 	}
 
-	for _, arg := range os.Args {
-		if arg == "--show-ignore-list" || arg == "-s" {
-			showIgnoreList = true
-			runRpsg = false
-			break
-		} else if strings.HasPrefix(arg, "--extend-ignore-list=") || strings.HasPrefix(arg, "-e=") {
-			if utils.ArgIsValidExtendIgnoreList(arg) == false {
-				fmt.Println("Format Error")
-				return
-			}
-
-			ignoreListExtends = strings.Split(strings.Split(arg, "=")[1], ",")
-		} else if strings.HasPrefix(arg, "--max-depth=") || strings.HasPrefix(arg, "-d=") {
-			if utils.ArgIsValidMaxDepth(arg) == false {
-				fmt.Println("Format Error")
-				return
-			}
-
-			maxDepth, err = strconv.Atoi(strings.Split(arg, "=")[1])
-		}
-	}
-
-	ignoreList := utils.GetDefaultIgnoreList()
-
 	combinedList := append(ignoreList, dotRpsgIgnoreList...)
 
-	combinedList = append(combinedList, ignoreListExtends...)
+	// ====================================================================================================
 
-	if showIgnoreList {
+	flagOutputs, err := utils.ArgsFlagCheck(os.Args[1:])
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	combinedList = append(combinedList, flagOutputs.IgnoreListExtends...)
+
+	if flagOutputs.ShowIgnoreList {
 		fmt.Println("Ignore list:")
 		for _, item := range ignoreList {
 			fmt.Println(item)
@@ -75,7 +45,7 @@ func main() {
 		fmt.Println()
 	}
 
-	if !runRpsg {
+	if !flagOutputs.RunRpsg {
 		return
 	}
 
@@ -87,7 +57,7 @@ func main() {
 
 	// print the structure of the directory
 	// maxDepth + 1 because the root directory is not counted as a level
-	structure := utils.ConstructStructure(dir, 0, false, 0, maxDepth + 1, []bool{})
+	structure := utils.ConstructStructure(dir, 0, false, 0, flagOutputs.MaxDepth + 1, []bool{})
 
 	err = utils.SaveStructureToFile(structure, "structure.md")
 
