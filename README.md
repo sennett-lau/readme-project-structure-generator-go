@@ -31,6 +31,12 @@ This is a command-line application that dynamically generates the project struct
 ```
 
 ## Installation
+To install this application:
+```
+git clone https://github.com/sennett-lau/readme-project-structure-generator-go.git
+cd readme-project-structure-generator-go
+make install
+```
 
 ## Implementation
 
