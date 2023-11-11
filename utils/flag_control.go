@@ -25,12 +25,16 @@ type flagOutput struct {
 
 	// show the ignore list and exit without running the rpsg program with the --show-ignore-list / -s flag
 	ShowIgnoreList bool
+
+	// show the help and exit without running the rpsg program with the --help / -h flag
+	ShowHelp bool
 }
 
 var flags = []flag{
 	{Name: "--extend-ignore-list", ShortName: "-e", Description: "Extend the default ignore list with the given list of files and directories", IsValid: ArgIsValidExtendIgnoreList},
 	{Name: "--max-depth", ShortName: "-d", Description: "Set the maximum depth of the search", IsValid: ArgIsValidMaxDepth},
 	{Name: "--show-ignore-list", ShortName: "-s", Description: "Show the default ignore list", IsValid: (func(string) bool)(nil)},
+	{Name: "--help", ShortName: "-h", Description: "Show the help", IsValid: (func(string) bool)(nil)},
 }
 
 var flagOutputs = flagOutput{
@@ -38,6 +42,7 @@ var flagOutputs = flagOutput{
 	IgnoreListExtends: []string{},
 	MaxDepth:          6,
 	ShowIgnoreList:    false,
+	ShowHelp:          false,
 }
 
 func ArgsFlagCheck(args []string) (flagOutput, error) {
@@ -59,6 +64,13 @@ func ArgsFlagCheck(args []string) (flagOutput, error) {
 
 		if arg == "--show-ignore-list" || arg == "-s" {
 			flagOutputs.ShowIgnoreList = true
+			flagOutputs.RunRpsg = false
+
+			return flagOutputs, nil
+		}
+
+		if arg == "--help" || arg == "-h" {
+			flagOutputs.ShowHelp = true
 			flagOutputs.RunRpsg = false
 
 			return flagOutputs, nil

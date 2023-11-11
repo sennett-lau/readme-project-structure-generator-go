@@ -45,6 +45,20 @@ func main() {
 		fmt.Println()
 	}
 
+	if flagOutputs.ShowHelp {
+		fmt.Println("Usage: rpsg [flags]")
+		fmt.Println()
+		fmt.Println("Flags:")
+		fmt.Println("  -h, --help                        show help")
+		fmt.Println("  -s, --show-ignore-list            show the list of extensions to ignore")
+		fmt.Println("  -i, --ignore-list-extends         add extensions to ignore")
+		fmt.Println("  -d, --max-depth                   set the maximum depth to traverse")
+		fmt.Println()
+		fmt.Println("Examples:")
+		fmt.Println("  rpsg -s")
+		return
+	}
+
 	if !flagOutputs.RunRpsg {
 		return
 	}

@@ -47,6 +47,18 @@ To use this application, simply run the following command at the root of your pr
 rpsg
 ```
 
+For help, you can run the following command:
+
+```bash
+rpsg --help
+```
+
+or
+
+```bash
+rpsg -h
+```
+
 There are some default ignored files which located at `config/GetDefaultIgnoreList` including:
 - `.git`
 - `.gitignore`
@@ -69,9 +81,23 @@ There are some default ignored files which located at `config/GetDefaultIgnoreLi
 
 ### Advanced Usage
 There are more available options for users to customize the output of the `structure.md` file.
+- [`--help`](#--help) / `-h`
 - [`--extend-ignore-list`](#--extend-ignore-list) / `-e`
 - [`--max-depth`](#--max-depth) / `-d`
 - [`--show-ignore-list`](#--show-ignore-list) / `-s`
+
+#### `--help`
+The `--help` option allows users to show the help message.
+
+```bash
+rpsg --help
+```
+
+or with the short option:
+
+```bash
+rpsg -h
+```
 
 #### `--extend-ignore-list`
 The `--extend-ignore-list` option allows users to add more ignored files to the default ignored list.
