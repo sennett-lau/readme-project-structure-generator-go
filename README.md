@@ -69,9 +69,9 @@ There are some default ignored files which located at `config/GetDefaultIgnoreLi
 
 ### Advanced Usage
 There are more available options for users to customize the output of the `structure.md` file.
-- [`--extend-ignore-list`](#--extend-ignore-list)
-- [`--max-depth`](#--max-depth)
-- [`--show-ignore-list`](#--show-ignore-list)
+- [`--extend-ignore-list`](#--extend-ignore-list) / `-e`
+- [`--max-depth`](#--max-depth) / `-d`
+- [`--show-ignore-list`](#--show-ignore-list) / `-s`
 
 #### `--extend-ignore-list`
 The `--extend-ignore-list` option allows users to add more ignored files to the default ignored list.
